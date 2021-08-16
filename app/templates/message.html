@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="messagediv">
+{% for message in messages %}
+	{% if message.fromid == current_user.id%}
+		<div style = "heigth: 100%; width: 100%;">
+			<p style="padding: .25em;text-align:right;overflowWrap: normal;">
+				<span class="tag is-info">{{message.body}}</span>
+				<br>
+				{{message.time.strftime('%D')}}
+			</p>
+		</div>
+	{% else %}
+		<div style = "heigth: 100%; width: 100%;">
+			<p style="padding: .25em;text-align:left;overflow-wrap: normal;">
+				<span class="tag is-sucess">{{message.body}}</span>
+				<br>
+				{{message.time.strftime('%D')}}
+			</p>
+		</div>
+	{% endif %}
+{% endfor %}
+</div>
+
+<form method="POST" action="" id="mform">
+	<div class="field has-addons">
+		<div class="control is-expanded">
+			<input required="true" class="input" name="content" id = "minput" type="text" placeholder="Type your message" />
+		</div>
+		<div class="control">
+			<button class="button is-info" id="mbutton">
+	          Send
+	        </button>
+	    </div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	function getnewmessages() {
+        $.get(window.location.href,
+            function(data,status,jqxhr){
+                document.querySelector('div.messagediv').innerHTML=$(data).find('div.messagediv').html()
+            }
+        )
+
+    }
+
+	setInterval(
+		function () {
+        $.get(window.location.href,
+            function(data,status,jqxhr){
+                document.querySelector('div.messagediv').innerHTML=$(data).find('div.messagediv').html()
+            }
+        )
+
+    },
+		1000)
+</script>
+{% endblock %}

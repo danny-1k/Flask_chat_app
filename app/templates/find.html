@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}.
+            </div>
+            {% endif %}
+        {% endwith %}
+<h1 class="title">
+  Find your friends with their username
+</h1>
+
+<form method="POST" action="">
+  <div class="field has-addons">
+    <div class="control is-expanded">
+      <input class="input is-large" name="query" type="text" placeholder="Find users" />
+    </div>
+    <div class="control">
+      <button class="button is-info is-large">Search</button>
+    </div>
+  </div>
+</form>
+
+{% if  results %}
+	<table class="table is-hoverable is-bordered is-fullwidth">
+		<thead>
+    		<tr>
+      			<th>Username</th>
+      			<th>Name</th>
+      			
+    		</tr>
+  		</thead>
+  		<tbody>
+  			{% for user in results%}
+  			<tr>
+      			<th><a href="{{url_for('message',username=user.username)}}">{{user.username}}</a></th>
+      			<td>{{user.name}}</td>
+      		</tr>
+      		{% endfor %}
+		</tbody>
+	</table>
+
+{% endif %}
+{% endblock %}
